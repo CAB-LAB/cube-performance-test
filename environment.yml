@@ -1,0 +1,8 @@
+name: cube-perf
+channels:
+    - conda-forge
+dependencies:
+    - python ==3.6
+    - pytest
+    - pytest-cov
+    - pytest-benchmark
