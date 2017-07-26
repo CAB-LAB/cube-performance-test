@@ -2,13 +2,15 @@ import time
 
 import numpy as np
 import pytest
+import glob
+import os
 from netCDF4 import Dataset
 
-LAT_DIM = 2160
-LON_DIM = 4320
-TIME_DIM = 230
+LAT_DIM = 10
+LON_DIM = 10
+TIME_DIM = 46
 CHUNK_SIZE = 270
-CUBE_NAME = 'cube-default-chunking'
+CUBE_NAME = 'cube-default-chunking2'
 
 
 def generate_cube():
@@ -19,20 +21,20 @@ def generate_cube():
     ds.createDimension('lat', LAT_DIM)
     ds.createDimension('lon', LON_DIM)
 
-    time = ds.createVariable('time', 'f8', 'time')
-    lon = ds.createVariable('lon', 'f4', 'lon')
-    lat = ds.createVariable('lat', 'f4', 'lat')
+    time_var = ds.createVariable('time', 'f8', 'time')
+    lon_var = ds.createVariable('lon', 'f4', 'lon')
+    lat_var = ds.createVariable('lat', 'f4', 'lat')
     value = ds.createVariable('value', 'f8', ('time', 'lon', 'lat'))
 
     lon_range = np.linspace(-180, 180, LON_DIM)
-    lon[:] = lon_range
+    lon_var[:] = lon_range
 
     lat_range = np.linspace(-90, 90, LAT_DIM)
-    lat[:] = lat_range
+    lat_var[:] = lat_range
 
     time.units = "days since 2015-1-1"
     for i in range(TIME_DIM):
-        time[i] = i
+        time_var[i] = i
         value[i, :, :] = np.random.uniform(size=(len(lon_range), len(lat_range)))
 
     ds.close()
@@ -56,10 +58,15 @@ def something(duration=0.0001):
     disable_gc=True,
     warmup=False
 )
-def test_gen_cube_no_chunking(benchmark):
-    benchmark(something)
+def test_gen_cube_no_chunking(benchmark, remove_generated_cube):
+    benchmark.pedantic(generate_cube, iterations=5, rounds=10)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def remove_generated_cube():
-    print("teardown")
+    yield
+    nc_files = glob.glob("*.nc")
+    for nc_file in nc_files:
+        os.remove(nc_file)
+    nc_files = glob.glob("*.nc")
+    assert len(nc_files) == 0

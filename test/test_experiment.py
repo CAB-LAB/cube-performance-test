@@ -22,7 +22,7 @@ def something(duration=0.0001):
 )
 def test_my_stuff(benchmark):
     # benchmark something
-    result = benchmark(something, 2)
+    result = benchmark.pedantic(something, rounds=10, iterations=10)
 
     # Extra code, to verify that the run completed correctly.
     # Sometimes you may want to check the result, fast functions
