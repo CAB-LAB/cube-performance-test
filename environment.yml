@@ -3,8 +3,9 @@ channels:
     - conda-forge
 dependencies:
     - python ==3.6
-    - numpy
+    - h5netcdf
     - netcdf4
+    - numpy
     - pytest
     - pytest-cov
     - pytest-benchmark

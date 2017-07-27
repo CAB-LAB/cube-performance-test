@@ -17,11 +17,15 @@ def remove_generated_cube():
     cleanup()
 
 
+@pytest.fixture(scope="session", autouse=True)
+def final_cleanup():
+    yield
+    cleanup()
+
+
 def cleanup():
     nc_files = glob.glob("*.nc")
     for nc_file in nc_files:
         os.remove(nc_file)
     nc_files = glob.glob("*.nc")
     assert len(nc_files) == 0
-
-

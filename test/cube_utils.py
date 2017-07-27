@@ -1,3 +1,4 @@
+import os
 import time
 
 import numpy as np
@@ -15,6 +16,9 @@ class CubeUtils:
         self.ds_name = cube_name + '.nc'
         self.lat_dim = lat_dim
         self.lon_dim = lon_dim
+
+        if os.path.exists(self.ds_name):
+            return
 
         ds = Dataset(self.ds_name, 'w', format='NETCDF4_CLASSIC')
         ds.description = 'Sample yearly cube'
@@ -45,7 +49,7 @@ class CubeUtils:
         ds.close()
 
     def read_spatial(self, read_chunk_size):
-        ds = xr.open_dataset(self.ds_name, engine='netcdf4', cache=False)
+        ds = xr.open_dataset(self.ds_name, engine='h5netcdf', cache=False)
         divisor_lat = self.lat_dim // read_chunk_size
         divisor_lon = self.lon_dim // read_chunk_size
         lat_pos = 0
@@ -54,8 +58,8 @@ class CubeUtils:
             lon_pos = 0
             for j in range(divisor_lon):
                 data[lat_pos:lat_pos + read_chunk_size,
-                     lon_pos:lon_pos + read_chunk_size] = ds['value'][0, lat_pos:lat_pos + read_chunk_size,
-                                                                      lon_pos:lon_pos + read_chunk_size]
+                lon_pos:lon_pos + read_chunk_size] = ds['value'][0, lat_pos:lat_pos + read_chunk_size,
+                                                     lon_pos:lon_pos + read_chunk_size]
                 lon_pos += read_chunk_size
             lat_pos += read_chunk_size
         ds.close()
