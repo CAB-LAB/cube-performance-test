@@ -21,7 +21,7 @@ class TestDefaultHighRes:
         disable_gc=True,
         warmup=False
     )
-    def test_read_cube_high_res_180x180(self, benchmark, cube):
+    def test_read_default_high_res_180x180(self, benchmark, cube):
         benchmark.pedantic(cube.read_spatial, args=(180,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
@@ -30,7 +30,7 @@ class TestDefaultHighRes:
         disable_gc=True,
         warmup=False
     )
-    def test_read_cube_high_res_360x360(self, benchmark, cube):
+    def test_read_default_high_res_360x360(self, benchmark, cube):
         benchmark.pedantic(cube.read_spatial, args=(360,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
@@ -39,7 +39,7 @@ class TestDefaultHighRes:
         disable_gc=True,
         warmup=False
     )
-    def test_read_cube_high_res_720x720(self, benchmark, cube):
+    def test_read_default_high_res_720x720(self, benchmark, cube):
         benchmark.pedantic(cube.read_spatial, args=(720,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
@@ -48,7 +48,7 @@ class TestDefaultHighRes:
         disable_gc=True,
         warmup=False
     )
-    def test_read_cube_high_res_1080x1080(self, benchmark, cube):
+    def test_read_default_high_res_1080x1080(self, benchmark, cube):
         benchmark.pedantic(cube.read_spatial, args=(1080,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
@@ -57,5 +57,5 @@ class TestDefaultHighRes:
         disable_gc=True,
         warmup=False
     )
-    def test_read_cube_high_res_2160x2160(self, benchmark, cube):
+    def test_read_default_high_res_2160x2160(self, benchmark, cube):
         benchmark.pedantic(cube.read_spatial, args=(2160,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
