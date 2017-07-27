@@ -7,5 +7,5 @@ setup(
     packages=['test'],
     license='MIT',
     long_description=open('README.md').read(),
-    requires=['pytest', 'numpy', 'netcdf4']
+    requires=['pytest', 'numpy', 'netcdf4', 'xarray']
 )
