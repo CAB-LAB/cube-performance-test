@@ -16,7 +16,7 @@ class TestDefaultLowRes:
         yield cube_utils
 
     @pytest.mark.benchmark(
-        group="Cube reading no chunking",
+        group="Reading default-chunked cube spatially",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -25,7 +25,7 @@ class TestDefaultLowRes:
         benchmark.pedantic(cube.read_spatial, args=(45,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Cube reading no chunking",
+        group="Reading default-chunked cube spatially",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -34,7 +34,7 @@ class TestDefaultLowRes:
         benchmark.pedantic(cube.read_spatial, args=(90,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Cube reading no chunking",
+        group="Reading default-chunked cube spatially",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -43,7 +43,7 @@ class TestDefaultLowRes:
         benchmark.pedantic(cube.read_spatial, args=(180,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Cube reading no chunking",
+        group="Reading default-chunked cube spatially",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -52,7 +52,7 @@ class TestDefaultLowRes:
         benchmark.pedantic(cube.read_spatial, args=(360,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Cube reading no chunking",
+        group="Reading default-chunked cube spatially",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False

@@ -8,7 +8,7 @@ ROUNDS_NUM = 5
 
 
 @pytest.mark.benchmark(
-    group="Cube generation no chunking",
+    group="Cube generation with default chunking",
     timer=time.perf_counter,
     disable_gc=True,
     warmup=False
@@ -20,7 +20,7 @@ def test_gen_cube_46x10x10(benchmark, cube_util):
 
 
 @pytest.mark.benchmark(
-    group="Cube generation no chunking",
+    group="Cube generation with default chunking",
     timer=time.perf_counter,
     disable_gc=True,
     warmup=False
@@ -32,7 +32,7 @@ def test_gen_cube_46x100x100(benchmark, cube_util):
 
 
 @pytest.mark.benchmark(
-    group="Cube generation no chunking",
+    group="Cube generation with default chunking",
     timer=time.perf_counter,
     disable_gc=True,
     warmup=False
