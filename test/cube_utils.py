@@ -9,11 +9,13 @@ from netCDF4 import Dataset
 class CubeUtils:
     def __init__(self):
         self.ds_name = None
+        self.time_dim = None
         self.lat_dim = None
         self.lon_dim = None
 
     def generate_cube(self, cube_name, time_dim, lat_dim, lon_dim, chunksizes=None):
         self.ds_name = cube_name + '.nc'
+        self.time_dim = time_dim
         self.lat_dim = lat_dim
         self.lon_dim = lon_dim
 
@@ -62,5 +64,13 @@ class CubeUtils:
                                                      lon_pos:lon_pos + read_chunk_size]
                 lon_pos += read_chunk_size
             lat_pos += read_chunk_size
+        ds.close()
+        return data
+
+    def read_temporal(self, read_chunk_size):
+        ds = xr.open_dataset(self.ds_name, engine='h5netcdf', cache=False)
+        data = np.empty((self.time_dim, self.lat_dim, self.lon_dim))
+        data[0:self.time_dim, 0:read_chunk_size, 0:read_chunk_size] = \
+            ds['value'][0:self.time_dim, 0:read_chunk_size, 0:read_chunk_size]
         ds.close()
         return data
