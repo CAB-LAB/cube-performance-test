@@ -16,7 +16,7 @@ class TestSpatiallyChunkedLowRes:
     @pytest.fixture(scope="class", autouse=True)
     def cube_1x360x360(self):
         cube_utils = CubeUtils()
-        cube_utils.generate_cube("default_low_res", 1, 720, 1440, chunksizes=(1, 360, 360))
+        cube_utils.generate_cube("360x360_chunked_low_res", 46, 720, 1440, chunksizes=(1, 360, 360))
         yield cube_utils
 
     # ---------------
@@ -88,7 +88,7 @@ class TestSpatiallyChunkedLowRes:
     @pytest.fixture(scope="class", autouse=True)
     def cube_1x180x180(self):
         cube_utils = CubeUtils()
-        cube_utils.generate_cube("default_low_res", 1, 720, 1440, chunksizes=(1, 180, 180))
+        cube_utils.generate_cube("180x180_chunked_low_res", 46, 720, 1440, chunksizes=(1, 180, 180))
         yield cube_utils
 
     # ---------------
@@ -160,7 +160,7 @@ class TestSpatiallyChunkedLowRes:
     @pytest.fixture(scope="class", autouse=True)
     def cube_1x90x90(self):
         cube_utils = CubeUtils()
-        cube_utils.generate_cube("default_low_res", 1, 720, 1440, chunksizes=(1, 90, 90))
+        cube_utils.generate_cube("90x90_chunked_low_res", 46, 720, 1440, chunksizes=(1, 90, 90))
         yield cube_utils
 
     # ---------------
@@ -232,7 +232,7 @@ class TestSpatiallyChunkedLowRes:
     @pytest.fixture(scope="class", autouse=True)
     def cube_1x45x45(self):
         cube_utils = CubeUtils()
-        cube_utils.generate_cube("default_low_res", 1, 720, 1440, chunksizes=(1, 45, 45))
+        cube_utils.generate_cube("45x45_chunked_low_res", 46, 720, 1440, chunksizes=(1, 45, 45))
         yield cube_utils
 
     # ---------------
