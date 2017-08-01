@@ -56,5 +56,5 @@ class TestDefaultLowRes:
         disable_gc=True,
         warmup=False
     )
-    def test_read_default_low_res_46x1080x1080(self, benchmark, cube_default):
-        benchmark.pedantic(cube_default.read_temporal, args=(1080,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
+    def test_read_default_low_res_46x720x720(self, benchmark, cube_default):
+        benchmark.pedantic(cube_default.read_temporal, args=(720,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)

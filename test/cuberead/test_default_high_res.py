@@ -12,7 +12,7 @@ class TestDefaultHighRes:
     @pytest.fixture(scope="class", autouse=True)
     def cube_default(self):
         cube_utils = CubeUtils()
-        cube_utils.generate_cube("default_low_res", 46, 2160, 4320)
+        cube_utils.generate_cube("default_high_res", 46, 2160, 4320)
         yield cube_utils
 
     # ---------------

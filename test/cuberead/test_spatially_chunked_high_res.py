@@ -8,7 +8,7 @@ ITERATIONS_NUM = 5
 ROUNDS_NUM = 5
 
 
-class TestSpatiallyChunkedLowRes:
+class TestSpatiallyChunkedHighRes:
     # ===========================
     # Chunksizes 1 x 1080 x 1080
     # ===========================

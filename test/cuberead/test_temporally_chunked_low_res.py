@@ -8,7 +8,7 @@ ITERATIONS_NUM = 5
 ROUNDS_NUM = 5
 
 
-class TestSpatiallyChunkedLowRes:
+class TestTemporallyChunkedLowRes:
     # ======================
     # Chunksizes 46 x 1 x 1
     # ======================
@@ -51,6 +51,7 @@ class TestSpatiallyChunkedLowRes:
         disable_gc=True,
         warmup=False
     )
+    @pytest.mark.skip(reason="it takes too long")
     def test_read_46x1x1_low_res_1x45x45(self, benchmark, cube_46x1x1):
         benchmark.pedantic(cube_46x1x1.read_spatial, args=(45,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
@@ -60,6 +61,6 @@ class TestSpatiallyChunkedLowRes:
         disable_gc=True,
         warmup=False
     )
+    @pytest.mark.skip(reason="it takes too long")
     def test_read_46x1x1_low_res_1x720x720(self, benchmark, cube_46x1x1):
         benchmark.pedantic(cube_46x1x1.read_spatial, args=(720,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
-
