@@ -13,7 +13,8 @@ class CubeUtils:
         self.lat_dim = None
         self.lon_dim = None
 
-    def generate_cube(self, cube_name, time_dim, lat_dim, lon_dim, chunksizes=None):
+    def generate_cube(self, cube_name, time_dim, lat_dim, lon_dim,
+                      chunksizes=None, compression=False, image_generator=None):
         self.ds_name = cube_name + '.nc'
         self.time_dim = time_dim
         self.lat_dim = lat_dim
@@ -33,9 +34,9 @@ class CubeUtils:
         lat_var = ds.createVariable('lat', 'f4', 'lat')
         lon_var = ds.createVariable('lon', 'f4', 'lon')
         if chunksizes:
-            value = ds.createVariable('value', 'f8', ('time', 'lat', 'lon'), chunksizes=chunksizes)
+            value = ds.createVariable('value', 'f8', ('time', 'lat', 'lon'), chunksizes=chunksizes, zlib=compression)
         else:
-            value = ds.createVariable('value', 'f8', ('time', 'lat', 'lon'))
+            value = ds.createVariable('value', 'f8', ('time', 'lat', 'lon'), zlib=compression)
 
         lat_range = np.linspace(-90, 90, lat_dim)
         lat_var[:] = lat_range
@@ -46,9 +47,30 @@ class CubeUtils:
         time.units = "days since 2015-1-1"
         for i in range(time_dim):
             time_var[i] = i
-            value[i, :, :] = np.random.uniform(size=(len(lat_range), len(lon_range)))
+            if image_generator:
+                value[i, :, :] = image_generator(len(lat_range), len(lon_range))
+            else:
+                value[i, :, :] = np.random.uniform(size=(len(lat_range), len(lon_range)))
 
         ds.close()
+
+    def generate_cube_random(self, cube_name, time_dim, lat_dim, lon_dim, chunksizes=None):
+        self.generate_cube(cube_name, time_dim, lat_dim, lon_dim, chunksizes=chunksizes)
+
+    def generate_compressed_cube(self, cube_name, time_dim, lat_dim, lon_dim, chunksizes=None):
+        self.generate_cube(cube_name, time_dim, lat_dim, lon_dim, chunksizes=chunksizes,
+                           image_generator=self.compression_friendly_image_generator, compression=True)
+
+    @staticmethod
+    def compression_friendly_image_generator(lat_dim, lon_dim):
+        mid_lat = lat_dim // 2
+        mid_lon = lon_dim // 2
+        array = np.empty((lat_dim, lon_dim))
+        array[0:mid_lat, 0:mid_lon] = 0
+        array[0:mid_lat, mid_lon: lon_dim] = 1
+        array[mid_lat:lat_dim, 0:mid_lon] = 2
+        array[mid_lat:lat_dim, mid_lon: lon_dim] = 3
+        return array
 
     def generate_temporal_cube(self, cube_name, time_dim, lat_dim, lon_dim, chunksizes=None):
         self.ds_name = cube_name + '.nc'
