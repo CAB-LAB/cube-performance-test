@@ -17,7 +17,7 @@ def remove_generated_cube():
     cleanup()
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="class", autouse=False)
 def final_cleanup():
     yield
     cleanup()

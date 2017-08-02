@@ -20,16 +20,16 @@ class TestDefaultHighRes:
     # ---------------
 
     @pytest.mark.benchmark(
-        group="Reading high-res default-chunked cube spatially",
+        group="Cube reading for subset spatial analysis",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
     )
-    def test_read_default_high_res_180x180(self, benchmark, cube_default):
-        benchmark.pedantic(cube_default.read_spatial, args=(180,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
+    def test_read_default_high_res_135x135(self, benchmark, cube_default):
+        benchmark.pedantic(cube_default.read_spatial, args=(135,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Reading high-res default-chunked cube spatially",
+        group="Cube reading for global spatial analysis",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -42,7 +42,7 @@ class TestDefaultHighRes:
     # ---------------
 
     @pytest.mark.benchmark(
-        group="Reading high-res default-chunked cube temporally",
+        group="Cube reading for subset spatial analysis",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -51,7 +51,7 @@ class TestDefaultHighRes:
         benchmark.pedantic(cube_default.read_temporal, args=(135,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Reading high-res default-chunked cube temporally",
+        group="Cube reading for global spatial analysis",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False

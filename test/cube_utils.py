@@ -51,7 +51,6 @@ class CubeUtils:
                 value[i, :, :] = image_generator(len(lat_range), len(lon_range))
             else:
                 value[i, :, :] = np.random.uniform(size=(len(lat_range), len(lon_range)))
-
         ds.close()
 
     def generate_cube_random(self, cube_name, time_dim, lat_dim, lon_dim, chunksizes=None):

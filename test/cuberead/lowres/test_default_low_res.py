@@ -20,7 +20,7 @@ class TestDefaultLowRes:
     # ---------------
 
     @pytest.mark.benchmark(
-        group="Reading low-res default-chunked cube spatially",
+        group="Cube reading for subset spatial analysis",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -29,7 +29,7 @@ class TestDefaultLowRes:
         benchmark.pedantic(cube_default.read_spatial, args=(45,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Reading low-res default-chunked cube spatially",
+        group="Cube reading for global spatial analysis",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -42,7 +42,7 @@ class TestDefaultLowRes:
     # ---------------
 
     @pytest.mark.benchmark(
-        group="Reading low-res default-chunked cube temporally",
+        group="Cube reading for subset temporal analysis",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -51,7 +51,7 @@ class TestDefaultLowRes:
         benchmark.pedantic(cube_default.read_temporal, args=(45,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Reading low-res default-chunked cube temporally",
+        group="Cube reading for global temporal analysis",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
