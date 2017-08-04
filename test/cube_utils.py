@@ -1,5 +1,7 @@
 import os
+import sys
 import time
+import subprocess
 
 import numpy as np
 import xarray as xr
@@ -94,6 +96,11 @@ class CubeUtils:
         self._lat_dim = lat_dim
         self._lon_dim = lon_dim
 
+        if self._cube_dir:
+            self._ds_name = os.path.join(self._cube_dir, cube_name + '.nc')
+        else:
+            self._ds_name = cube_name + '.nc'
+
         if os.path.exists(self._ds_name):
             return
 
@@ -150,6 +157,10 @@ class CubeUtils:
                 lon_pos += read_chunk_size
             lat_pos += read_chunk_size
         ds.close()
+        if sys.platform == 'win32':
+            # to clean up standby list in windows, to make sure that each run can always reflect
+            # the first run of the command (without any caching)
+            subprocess.call(['test\\cuberead\\resources\\EmptyStandbyList.exe', 'standbylist'])
         return data
 
     def read_temporal(self, read_chunk_size):
@@ -158,4 +169,8 @@ class CubeUtils:
         data[0:self._time_dim, 0:read_chunk_size, 0:read_chunk_size] = \
             ds['value'][0:self._time_dim, 0:read_chunk_size, 0:read_chunk_size]
         ds.close()
+        if sys.platform == 'win32':
+            # to clean up standby list in windows, to make sure that each run can always reflect
+            # the first run of the command (without any caching)
+            subprocess.call(['test\\cuberead\\resources\\EmptyStandbyList.exe', 'standbylist'])
         return data
