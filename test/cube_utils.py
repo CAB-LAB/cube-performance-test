@@ -170,12 +170,14 @@ class CubeUtils:
             lon_pos = 0
             for j in range(divisor_lon):
                 data[lat_pos:lat_pos + read_chunk_size, lon_pos:lon_pos + read_chunk_size] = \
-                    ds.isel(lat=slice(lat_pos, lat_pos + read_chunk_size),
-                            lon=slice(lon_pos, lon_pos + read_chunk_size))
+                    ds.isel(time=0,
+                            lat=slice(lat_pos, lat_pos + read_chunk_size),
+                            lon=slice(lon_pos, lon_pos + read_chunk_size))['value']
                 lon_pos += read_chunk_size
             lat_pos += read_chunk_size
         ds.close()
         self.mem_release()
+        print(data.shape)
         return data
 
     def read_temporal(self, read_chunk_size):
@@ -185,6 +187,18 @@ class CubeUtils:
             ds['value'][0:self._time_dim, 0:read_chunk_size, 0:read_chunk_size]
         ds.close()
         self.mem_release()
+        return data
+
+    def read_temporal_isel(self, read_chunk_size):
+        ds = xr.open_dataset(self._ds_name, engine='netcdf4', cache=False)
+        data = np.empty((self._time_dim, self._lat_dim, self._lon_dim))
+        data[0:self._time_dim, 0:read_chunk_size, 0:read_chunk_size] = \
+            ds.isel(time=slice(0, self._time_dim),
+                    lat=slice(0, read_chunk_size),
+                    lon=slice(0, read_chunk_size))['value']
+        ds.close()
+        self.mem_release()
+        print(data.shape)
         return data
 
     @staticmethod
