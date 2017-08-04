@@ -3,27 +3,44 @@ import time
 
 import numpy as np
 import xarray as xr
+import yaml
 from netCDF4 import Dataset
+
+CONFIG_FILE = "cube-perf-config.yml"
 
 
 class CubeUtils:
     def __init__(self):
-        self.ds_name = None
-        self.time_dim = None
-        self.lat_dim = None
-        self.lon_dim = None
+        self._ds_name = None
+        self._time_dim = None
+        self._lat_dim = None
+        self._lon_dim = None
+        if os.path.exists(CONFIG_FILE):
+            with open(CONFIG_FILE, 'r') as ymlfile:
+                config = yaml.load(ymlfile)
+            if 'cube_dir' in config:
+                self._cube_dir = config['cube_dir']
+            else:
+                self._cube_dir = None
+        else:
+            self._cube_dir = None
 
     def generate_cube(self, cube_name, time_dim, lat_dim, lon_dim,
                       chunksizes=None, compression=False, image_generator=None):
-        self.ds_name = cube_name + '.nc'
-        self.time_dim = time_dim
-        self.lat_dim = lat_dim
-        self.lon_dim = lon_dim
 
-        if os.path.exists(self.ds_name):
+        self._time_dim = time_dim
+        self._lat_dim = lat_dim
+        self._lon_dim = lon_dim
+
+        if self._cube_dir:
+            self._ds_name = os.path.join(self._cube_dir, cube_name + '.nc')
+        else:
+            self._ds_name = cube_name + '.nc'
+
+        if os.path.exists(self._ds_name):
             return
 
-        ds = Dataset(self.ds_name, 'w', format='NETCDF4_CLASSIC')
+        ds = Dataset(self._ds_name, 'w', format='NETCDF4_CLASSIC')
         ds.description = 'Sample yearly cube'
 
         ds.createDimension('time', time_dim)
@@ -72,15 +89,15 @@ class CubeUtils:
         return array
 
     def generate_temporal_cube(self, cube_name, time_dim, lat_dim, lon_dim, chunksizes=None):
-        self.ds_name = cube_name + '.nc'
-        self.time_dim = time_dim
-        self.lat_dim = lat_dim
-        self.lon_dim = lon_dim
+        self._ds_name = cube_name + '.nc'
+        self._time_dim = time_dim
+        self._lat_dim = lat_dim
+        self._lon_dim = lon_dim
 
-        if os.path.exists(self.ds_name):
+        if os.path.exists(self._ds_name):
             return
 
-        ds = Dataset(self.ds_name, 'w', format='NETCDF4_CLASSIC')
+        ds = Dataset(self._ds_name, 'w', format='NETCDF4_CLASSIC')
         ds.description = 'Sample yearly cube'
 
         ds.createDimension('time', time_dim)
@@ -106,25 +123,25 @@ class CubeUtils:
             time_var[i] = i
 
         time_chunk, lat_chunk, lon_chunk = chunksizes
-        divisor_lat = self.lat_dim // lat_chunk
-        divisor_lon = self.lon_dim // lon_chunk
+        divisor_lat = self._lat_dim // lat_chunk
+        divisor_lon = self._lon_dim // lon_chunk
         lat_pos = 0
         for i in range(divisor_lat):
             lon_pos = 0
             for j in range(divisor_lon):
                 value[:, lat_pos:lat_pos + lat_chunk, lon_pos:lon_pos + lon_chunk] = \
-                    np.random.uniform(size=(self.time_dim, lat_chunk, lon_chunk))
+                    np.random.uniform(size=(self._time_dim, lat_chunk, lon_chunk))
                 lon_pos += lon_chunk
             lat_pos += lat_chunk
 
         ds.close()
 
     def read_spatial(self, read_chunk_size):
-        ds = xr.open_dataset(self.ds_name, engine='h5netcdf', cache=False)
-        divisor_lat = self.lat_dim // read_chunk_size
-        divisor_lon = self.lon_dim // read_chunk_size
+        ds = xr.open_dataset(self._ds_name, engine='h5netcdf', cache=False)
+        divisor_lat = self._lat_dim // read_chunk_size
+        divisor_lon = self._lon_dim // read_chunk_size
         lat_pos = 0
-        data = np.empty((self.lat_dim, self.lon_dim))
+        data = np.empty((self._lat_dim, self._lon_dim))
         for i in range(divisor_lat):
             lon_pos = 0
             for j in range(divisor_lon):
@@ -136,9 +153,9 @@ class CubeUtils:
         return data
 
     def read_temporal(self, read_chunk_size):
-        ds = xr.open_dataset(self.ds_name, engine='h5netcdf', cache=False)
-        data = np.empty((self.time_dim, self.lat_dim, self.lon_dim))
-        data[0:self.time_dim, 0:read_chunk_size, 0:read_chunk_size] = \
-            ds['value'][0:self.time_dim, 0:read_chunk_size, 0:read_chunk_size]
+        ds = xr.open_dataset(self._ds_name, engine='h5netcdf', cache=False)
+        data = np.empty((self._time_dim, self._lat_dim, self._lon_dim))
+        data[0:self._time_dim, 0:read_chunk_size, 0:read_chunk_size] = \
+            ds['value'][0:self._time_dim, 0:read_chunk_size, 0:read_chunk_size]
         ds.close()
         return data

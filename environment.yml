@@ -9,3 +9,4 @@ dependencies:
     - pytest
     - pytest-cov
     - pytest-benchmark
+    - pyyaml

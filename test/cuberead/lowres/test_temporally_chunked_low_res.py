@@ -39,7 +39,7 @@ class TestTemporallyChunkedLowRes:
         warmup=False
     )
     def test_read_46x1x1_low_res_46x720x720(self, benchmark, cube_46x1x1):
-        benchmark.pedantic(cube_46x1x1.read_temporal, args=(720,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
+        benchmark.pedantic(cube_46x1x1.read_temporal, args=(720,), iterations=1, rounds=3)
 
     # ---------------
     # Read spatially

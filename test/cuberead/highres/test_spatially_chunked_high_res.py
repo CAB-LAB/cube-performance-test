@@ -24,7 +24,7 @@ class TestSpatiallyChunkedHighRes:
     # ---------------
 
     @pytest.mark.benchmark(
-        group="Cube reading for subset spatial analysis",
+        group="Cube reading for subset spatial analysis high-res",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -33,7 +33,7 @@ class TestSpatiallyChunkedHighRes:
         benchmark.pedantic(cube_1x135x135.read_spatial, args=(135,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Cube reading for global spatial analysis",
+        group="Cube reading for global spatial analysis high-res",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -46,7 +46,7 @@ class TestSpatiallyChunkedHighRes:
     # ---------------
 
     @pytest.mark.benchmark(
-        group="Cube reading for subset spatial analysis",
+        group="Cube reading for subset temporal analysis high-res",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -55,7 +55,7 @@ class TestSpatiallyChunkedHighRes:
         benchmark.pedantic(cube_1x135x135.read_temporal, args=(135,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Cube reading for global spatial analysis",
+        group="Cube reading for global temporal analysis high-res",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -78,7 +78,7 @@ class TestSpatiallyChunkedHighRes:
     # ---------------
 
     @pytest.mark.benchmark(
-        group="Cube reading for subset spatial analysis",
+        group="Cube reading for subset spatial analysis high-res",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -87,7 +87,7 @@ class TestSpatiallyChunkedHighRes:
         benchmark.pedantic(cube_1x1080x1080.read_spatial, args=(135,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Cube reading for global spatial analysis",
+        group="Cube reading for global spatial analysis high-res",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -100,7 +100,7 @@ class TestSpatiallyChunkedHighRes:
     # ---------------
 
     @pytest.mark.benchmark(
-        group="Cube reading for subset spatial analysis",
+        group="Cube reading for subset temporal analysis high-res",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -109,7 +109,7 @@ class TestSpatiallyChunkedHighRes:
         benchmark.pedantic(cube_1x1080x1080.read_temporal, args=(135,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Cube reading for global spatial analysis",
+        group="Cube reading for global temporal analysis high-res",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -132,7 +132,7 @@ class TestSpatiallyChunkedHighRes:
     # ---------------
 
     @pytest.mark.benchmark(
-        group="Cube reading for subset spatial analysis",
+        group="Cube reading for subset spatial analysis high-res",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -141,7 +141,7 @@ class TestSpatiallyChunkedHighRes:
         benchmark.pedantic(cube_1x2160x2160.read_spatial, args=(135,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Cube reading for global spatial analysis",
+        group="Cube reading for global spatial analysis high-res",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -154,7 +154,7 @@ class TestSpatiallyChunkedHighRes:
     # ---------------
 
     @pytest.mark.benchmark(
-        group="Cube reading for subset spatial analysis",
+        group="Cube reading for subset temporal analysis high-res",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -163,7 +163,7 @@ class TestSpatiallyChunkedHighRes:
         benchmark.pedantic(cube_1x2160x2160.read_temporal, args=(135,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Cube reading for global spatial analysis",
+        group="Cube reading for global temporal analysis high-res",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
