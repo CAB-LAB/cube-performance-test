@@ -2,10 +2,11 @@ import time
 
 import pytest
 
+from test import config
 from test.cube_utils import CubeUtils
 
-ITERATIONS_NUM = 5
-ROUNDS_NUM = 5
+ITERATIONS_NUM = getattr(config, 'iterations_num', 1)
+ROUNDS_NUM = getattr(config, 'rounds_num', 10)
 
 
 class TestSpatiallyChunkedLowRes:
