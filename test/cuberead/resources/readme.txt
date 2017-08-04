@@ -6,3 +6,5 @@ called again in the future, but if more memory is needed for any other processes
 entry will be overwritten. However, for this performance test, it is desirable to simulate a 'first-time' case for each
 test run, which means without caching. This is where EmptyStandbyList.exe comes into play. After each reading of netcdf
 file, this command is executed, to ensure a non-cached reading on the next test round.
+
+The executable is available here: https://wj32.org/wp/software/empty-standby-list/
