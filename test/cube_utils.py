@@ -157,10 +157,25 @@ class CubeUtils:
                 lon_pos += read_chunk_size
             lat_pos += read_chunk_size
         ds.close()
-        if sys.platform == 'win32':
-            # to clean up standby list in windows, to make sure that each run can always reflect
-            # the first run of the command (without any caching)
-            subprocess.call(['test\\cuberead\\resources\\EmptyStandbyList.exe', 'standbylist'])
+        self.mem_release()
+        return data
+
+    def read_spatial_isel(self, read_chunk_size):
+        ds = xr.open_dataset(self._ds_name, engine='netcdf4', cache=False)
+        divisor_lat = self._lat_dim // read_chunk_size
+        divisor_lon = self._lon_dim // read_chunk_size
+        lat_pos = 0
+        data = np.empty((self._lat_dim, self._lon_dim))
+        for i in range(divisor_lat):
+            lon_pos = 0
+            for j in range(divisor_lon):
+                data[lat_pos:lat_pos + read_chunk_size, lon_pos:lon_pos + read_chunk_size] = \
+                    ds.isel(lat=slice(lat_pos, lat_pos + read_chunk_size),
+                            lon=slice(lon_pos, lon_pos + read_chunk_size))
+                lon_pos += read_chunk_size
+            lat_pos += read_chunk_size
+        ds.close()
+        self.mem_release()
         return data
 
     def read_temporal(self, read_chunk_size):
@@ -169,8 +184,12 @@ class CubeUtils:
         data[0:self._time_dim, 0:read_chunk_size, 0:read_chunk_size] = \
             ds['value'][0:self._time_dim, 0:read_chunk_size, 0:read_chunk_size]
         ds.close()
+        self.mem_release()
+        return data
+
+    @staticmethod
+    def mem_release():
         if sys.platform == 'win32':
             # to clean up standby list in windows, to make sure that each run can always reflect
             # the first run of the command (without any caching)
             subprocess.call(['test\\cuberead\\resources\\EmptyStandbyList.exe', 'standbylist'])
-        return data

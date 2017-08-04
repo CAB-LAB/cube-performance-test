@@ -21,7 +21,7 @@ class TestDefaultLowRes:
     # ---------------
 
     @pytest.mark.benchmark(
-        group="Cube reading for subset spatial analysis",
+        group="Cube reading for small area spatial analysis",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -30,7 +30,7 @@ class TestDefaultLowRes:
         benchmark.pedantic(cube_default.read_spatial, args=(45,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Cube reading for global spatial analysis",
+        group="Cube reading for large area spatial analysis",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False

@@ -47,7 +47,7 @@ class TestTemporallyChunkedLowRes:
     # ---------------
 
     @pytest.mark.benchmark(
-        group="Cube reading for subset spatial analysis",
+        group="Cube reading for small area spatial analysis",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -56,7 +56,7 @@ class TestTemporallyChunkedLowRes:
         benchmark.pedantic(cube_46x1x1.read_spatial, args=(45,), iterations=1, rounds=3)
 
     @pytest.mark.benchmark(
-        group="Cube reading for global spatial analysis",
+        group="Cube reading for large area spatial analysis",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -101,7 +101,7 @@ class TestTemporallyChunkedLowRes:
     # ---------------
 
     @pytest.mark.benchmark(
-        group="Cube reading for subset spatial analysis",
+        group="Cube reading for small area spatial analysis",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -110,7 +110,7 @@ class TestTemporallyChunkedLowRes:
         benchmark.pedantic(cube_46x45x45.read_spatial, args=(45,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Cube reading for global spatial analysis",
+        group="Cube reading for large area spatial analysis",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -155,7 +155,7 @@ class TestTemporallyChunkedLowRes:
     # ---------------
 
     @pytest.mark.benchmark(
-        group="Cube reading for subset spatial analysis",
+        group="Cube reading for small area spatial analysis",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -164,7 +164,7 @@ class TestTemporallyChunkedLowRes:
         benchmark.pedantic(cube_46x180x180.read_spatial, args=(45,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Cube reading for global spatial analysis",
+        group="Cube reading for large area spatial analysis",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False

@@ -25,7 +25,7 @@ class TestSpatiallyChunkedHighRes:
     # ---------------
 
     @pytest.mark.benchmark(
-        group="Cube reading for subset spatial analysis high-res",
+        group="Cube reading for small area spatial analysis high-res",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -34,7 +34,7 @@ class TestSpatiallyChunkedHighRes:
         benchmark.pedantic(cube_1x135x135.read_spatial, args=(135,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Cube reading for global spatial analysis high-res",
+        group="Cube reading for large area spatial analysis high-res",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -79,7 +79,7 @@ class TestSpatiallyChunkedHighRes:
     # ---------------
 
     @pytest.mark.benchmark(
-        group="Cube reading for subset spatial analysis high-res",
+        group="Cube reading for small area spatial analysis high-res",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -88,7 +88,7 @@ class TestSpatiallyChunkedHighRes:
         benchmark.pedantic(cube_1x1080x1080.read_spatial, args=(135,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Cube reading for global spatial analysis high-res",
+        group="Cube reading for large area spatial analysis high-res",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -133,7 +133,7 @@ class TestSpatiallyChunkedHighRes:
     # ---------------
 
     @pytest.mark.benchmark(
-        group="Cube reading for subset spatial analysis high-res",
+        group="Cube reading for small area spatial analysis high-res",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
@@ -142,7 +142,7 @@ class TestSpatiallyChunkedHighRes:
         benchmark.pedantic(cube_1x2160x2160.read_spatial, args=(135,), iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM)
 
     @pytest.mark.benchmark(
-        group="Cube reading for global spatial analysis high-res",
+        group="Cube reading for large area spatial analysis high-res",
         timer=time.perf_counter,
         disable_gc=True,
         warmup=False
