@@ -28,6 +28,12 @@ def final_cleanup():
     cleanup()
 
 
+@pytest.fixture(scope="function", autouse=False)
+def final_mem_cleanup():
+    yield
+    CubeUtils.mem_release()
+
+
 def cleanup():
     nc_files = glob.glob("*.nc")
     for nc_file in nc_files:

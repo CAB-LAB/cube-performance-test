@@ -177,7 +177,6 @@ class CubeUtils:
             lat_pos += read_chunk_size
         ds.close()
         self.mem_release()
-        print(data.shape)
         return data
 
     def read_temporal(self, read_chunk_size):
@@ -198,7 +197,6 @@ class CubeUtils:
                     lon=slice(0, read_chunk_size))['value']
         ds.close()
         self.mem_release()
-        print(data.shape)
         return data
 
     @staticmethod
