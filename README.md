@@ -6,6 +6,9 @@ The first step is to clone the repository:
 
     $ git clone https://github.com/CAB-LAB/cube-performance-test.git
     $ cd cd cube-performance-test
+    
+### Windows only
+To be able to run `EmptyStandbyList.exe` (the tool to wipe file caches), run the test as admin.
 
 ### Conda environment
 Before starting the test, please create an `esdc` conda environment:
