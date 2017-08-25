@@ -28,7 +28,7 @@ class CubeUtils:
             self._cube_dir = None
 
     def generate_cube(self, cube_name, time_dim, lat_dim, lon_dim,
-                      chunksizes=None, compression=False, image_generator=None):
+                      chunksizes=None, compression=False, image_generator=None, var_num=1):
 
         self._time_dim = time_dim
         self._lat_dim = lat_dim
@@ -49,31 +49,51 @@ class CubeUtils:
         ds.createDimension('lat', lat_dim)
         ds.createDimension('lon', lon_dim)
 
-        time_var = ds.createVariable('time', 'f8', 'time')
         lat_var = ds.createVariable('lat', 'f4', 'lat')
-        lon_var = ds.createVariable('lon', 'f4', 'lon')
-        if chunksizes:
-            value = ds.createVariable('value', 'f8', ('time', 'lat', 'lon'), chunksizes=chunksizes, zlib=compression)
-        else:
-            value = ds.createVariable('value', 'f8', ('time', 'lat', 'lon'), zlib=compression)
-
         lat_range = np.linspace(-90, 90, lat_dim)
         lat_var[:] = lat_range
 
+        lon_var = ds.createVariable('lon', 'f4', 'lon')
         lon_range = np.linspace(-180, 180, lon_dim)
         lon_var[:] = lon_range
 
+        time_var = ds.createVariable('time', 'f8', 'time')
         time.units = "days since 2015-1-1"
-        for i in range(time_dim):
-            time_var[i] = i
-            if image_generator:
-                value[i, :, :] = image_generator(len(lat_range), len(lon_range))
+        if var_num == 1:
+            if chunksizes:
+                value = ds.createVariable('value', 'f8', ('time', 'lat', 'lon'),
+                                          chunksizes=chunksizes, zlib=compression)
             else:
-                value[i, :, :] = np.random.uniform(size=(len(lat_range), len(lon_range)))
+                value = ds.createVariable('value', 'f8', ('time', 'lat', 'lon'), zlib=compression)
+
+            for i in range(time_dim):
+                time_var[i] = i
+                if image_generator:
+                    value[i, :, :] = image_generator(len(lat_range), len(lon_range))
+                else:
+                    value[i, :, :] = np.random.uniform(size=(len(lat_range), len(lon_range)))
+        elif var_num > 1:
+            if chunksizes:
+                value = [ds.createVariable('var' + str(i), 'f8', ('time', 'lat', 'lon'),
+                                           chunksizes=chunksizes, zlib=compression) for i in range(var_num)]
+            else:
+                value = [ds.createVariable('var' + str(i), 'f8', ('time', 'lat', 'lon'),
+                                           zlib=compression) for i in range(var_num)]
+            for j in range(var_num):
+                for i in range(time_dim):
+                    time_var[i] = i
+                    if image_generator:
+                        value[j][i, :, :] = image_generator(len(lat_range), len(lon_range))
+                    else:
+                        value[j][i, :, :] = np.random.uniform(size=(len(lat_range), len(lon_range)))
+
         ds.close()
 
     def generate_cube_random(self, cube_name, time_dim, lat_dim, lon_dim, chunksizes=None):
         self.generate_cube(cube_name, time_dim, lat_dim, lon_dim, chunksizes=chunksizes)
+
+    def generate_cube_multivar(self, cube_name, time_dim, lat_dim, lon_dim, chunksizes=None, var_num=2):
+        self.generate_cube(cube_name, time_dim, lat_dim, lon_dim, chunksizes=chunksizes, var_num=var_num)
 
     def generate_compressed_cube(self, cube_name, time_dim, lat_dim, lon_dim, chunksizes=None):
         self.generate_cube(cube_name, time_dim, lat_dim, lon_dim, chunksizes=chunksizes,
@@ -104,7 +124,7 @@ class CubeUtils:
         if os.path.exists(self._ds_name):
             return
 
-        ds = Dataset(self._ds_name, 'w', format='NETCDF4_CLASSIC')
+        ds = Dataset(self._ds_name, 'w', format='NETCDF4')
         ds.description = 'Sample yearly cube'
 
         ds.createDimension('time', time_dim)
@@ -201,6 +221,18 @@ class CubeUtils:
         ds.close()
         self.mem_release()
         return data
+
+    def get_corr(self, dim='time'):
+        ds = self.open_dataset()
+        var1_name = 'var0'
+        var2_name = 'var1'
+        if var1_name not in ds or var2_name not in ds:
+            raise Exception("wrong dataset!")
+        ds_tmean = ds.mean(skipna=True, dim=dim)
+        ds_tstd = ds.std(skipna=True, dim=dim)
+        covar_1 = (ds[var1_name] - ds_tmean[var1_name]) * (ds[var2_name] - ds_tmean[var2_name])
+        ds.close()
+        return covar_1.mean(dim='time', skipna=True) / (ds_tstd[var1_name] * ds_tstd[var2_name])
 
     @staticmethod
     def mem_release():
