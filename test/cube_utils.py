@@ -143,8 +143,11 @@ class CubeUtils:
 
         ds.close()
 
+    def open_dataset(self, engine='netcdf4', cache=False):
+        return xr.open_dataset(self._ds_name, engine=engine, cache=cache)
+
     def read_spatial(self, read_chunk_size):
-        ds = xr.open_dataset(self._ds_name, engine='netcdf4', cache=False)
+        ds = self.open_dataset()
         divisor_lat = self._lat_dim // read_chunk_size
         divisor_lon = self._lon_dim // read_chunk_size
         lat_pos = 0
@@ -161,7 +164,7 @@ class CubeUtils:
         return data
 
     def read_spatial_isel(self, read_chunk_size):
-        ds = xr.open_dataset(self._ds_name, engine='netcdf4', cache=False)
+        ds = self.open_dataset()
         divisor_lat = self._lat_dim // read_chunk_size
         divisor_lon = self._lon_dim // read_chunk_size
         lat_pos = 0
@@ -180,7 +183,7 @@ class CubeUtils:
         return data
 
     def read_temporal(self, read_chunk_size):
-        ds = xr.open_dataset(self._ds_name, engine='netcdf4', cache=False)
+        ds = self.open_dataset()
         data = np.empty((self._time_dim, self._lat_dim, self._lon_dim))
         data[0:self._time_dim, 0:read_chunk_size, 0:read_chunk_size] = \
             ds['value'][0:self._time_dim, 0:read_chunk_size, 0:read_chunk_size]
@@ -189,7 +192,7 @@ class CubeUtils:
         return data
 
     def read_temporal_isel(self, read_chunk_size):
-        ds = xr.open_dataset(self._ds_name, engine='netcdf4', cache=False)
+        ds = self.open_dataset()
         data = np.empty((self._time_dim, self._lat_dim, self._lon_dim))
         data[0:self._time_dim, 0:read_chunk_size, 0:read_chunk_size] = \
             ds.isel(time=slice(0, self._time_dim),
