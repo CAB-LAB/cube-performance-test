@@ -53,7 +53,11 @@ class TestMean:
         warmup=True
     )
     def test_mean_high_res_135x135(self, benchmark, ds_135x135):
-        benchmark.pedantic(ds_135x135.mean, iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM, warmup_rounds=3)
+        result = benchmark.pedantic(ds_135x135.mean, iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM, warmup_rounds=3)
+        assert ('time' not in result)
+        assert ('lat' not in result)
+        assert ('lon' not in result)
+        assert (result['value'].size == 1)
 
     @pytest.mark.benchmark(
         group="All-dimensions mean operation",
@@ -62,7 +66,11 @@ class TestMean:
         warmup=True
     )
     def test_mean_high_res_1080x1080(self, benchmark, ds_1080x1080):
-        benchmark.pedantic(ds_1080x1080.mean, iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM, warmup_rounds=3)
+        result = benchmark.pedantic(ds_1080x1080.mean, iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM, warmup_rounds=3)
+        assert ('time' not in result)
+        assert ('lat' not in result)
+        assert ('lon' not in result)
+        assert (result['value'].size == 1)
 
     @pytest.mark.benchmark(
         group="All-dimensions mean operation",
@@ -71,7 +79,11 @@ class TestMean:
         warmup=True
     )
     def test_mean_high_res_2160x2160(self, benchmark, ds_2160x2160):
-        benchmark.pedantic(ds_2160x2160.mean, iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM, warmup_rounds=3)
+        result = benchmark.pedantic(ds_2160x2160.mean, iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM, warmup_rounds=3)
+        assert ('time' not in result)
+        assert ('lat' not in result)
+        assert ('lon' not in result)
+        assert (result['value'].size == 1)
 
     @pytest.mark.benchmark(
         group="LatLon mean operation",
@@ -80,8 +92,12 @@ class TestMean:
         warmup=True
     )
     def test_mean_latlon_high_res_2160x2160(self, benchmark, ds_2160x2160):
-        benchmark.pedantic(ds_2160x2160.mean, kwargs={'dim': ('lat', 'lon')}, iterations=ITERATIONS_NUM,
-                           rounds=ROUNDS_NUM, warmup_rounds=3)
+        result = benchmark.pedantic(ds_2160x2160.mean, kwargs={'dim': ('lat', 'lon')}, iterations=ITERATIONS_NUM,
+                                    rounds=ROUNDS_NUM, warmup_rounds=3)
+        assert ('time' in result)
+        assert (result['time'].size == 46)
+        assert ('lat' not in result)
+        assert ('lon' not in result)
 
     @pytest.mark.benchmark(
         group="LatLon mean operation",
@@ -90,8 +106,12 @@ class TestMean:
         warmup=True
     )
     def test_mean_latlon_high_res_46x1080x1080(self, benchmark, ds_46x1080x1080):
-        benchmark.pedantic(ds_46x1080x1080.mean, kwargs={'dim': ('lat', 'lon')}, iterations=ITERATIONS_NUM,
-                           rounds=ROUNDS_NUM, warmup_rounds=3)
+        result = benchmark.pedantic(ds_46x1080x1080.mean, kwargs={'dim': ('lat', 'lon')}, iterations=ITERATIONS_NUM,
+                                    rounds=ROUNDS_NUM, warmup_rounds=3)
+        assert ('time' in result)
+        assert (result['time'].size == 46)
+        assert ('lat' not in result)
+        assert ('lon' not in result)
 
     # -------------------
     # Temporal-chunk Cube
@@ -104,7 +124,11 @@ class TestMean:
         warmup=True
     )
     def test_mean_high_res_46x1080x1080(self, benchmark, ds_46x1080x1080):
-        benchmark.pedantic(ds_46x1080x1080.mean, iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM, warmup_rounds=3)
+        result = benchmark.pedantic(ds_46x1080x1080.mean, iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM, warmup_rounds=3)
+        assert ('time' not in result)
+        assert ('lat' not in result)
+        assert ('lon' not in result)
+        assert (result['value'].size == 1)
 
     @pytest.mark.benchmark(
         group="Temporal mean operation",
@@ -113,8 +137,13 @@ class TestMean:
         warmup=True
     )
     def test_mean_time_high_res_46x1080x1080(self, benchmark, ds_46x1080x1080):
-        benchmark.pedantic(ds_46x1080x1080.mean, kwargs={'dim': 'time'}, iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM,
-                           warmup_rounds=3)
+        result = benchmark.pedantic(ds_46x1080x1080.mean, kwargs={'dim': 'time'}, iterations=ITERATIONS_NUM,
+                                    rounds=ROUNDS_NUM, warmup_rounds=3)
+        assert ('time' not in result)
+        assert ('lat' in result)
+        assert (result['lat'].size == 2160)
+        assert ('lon' in result)
+        assert (result['lon'].size == 4320)
 
     @pytest.mark.benchmark(
         group="Temporal mean operation",
@@ -123,5 +152,10 @@ class TestMean:
         warmup=True
     )
     def test_mean_time_high_res_2160x2160(self, benchmark, ds_2160x2160):
-        benchmark.pedantic(ds_2160x2160.mean, kwargs={'dim': 'time'}, iterations=ITERATIONS_NUM, rounds=ROUNDS_NUM,
-                           warmup_rounds=3)
+        result = benchmark.pedantic(ds_2160x2160.mean, kwargs={'dim': 'time'}, iterations=ITERATIONS_NUM,
+                                    rounds=ROUNDS_NUM, warmup_rounds=3)
+        assert ('time' not in result)
+        assert ('lat' in result)
+        assert (result['lat'].size == 2160)
+        assert ('lon' in result)
+        assert (result['lon'].size == 4320)
