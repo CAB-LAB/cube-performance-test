@@ -1,7 +1,7 @@
 import os
+import subprocess
 import sys
 import time
-import subprocess
 
 import numpy as np
 import xarray as xr
@@ -233,6 +233,19 @@ class CubeUtils:
         covar_1 = (ds[var1_name] - ds_tmean[var1_name]) * (ds[var2_name] - ds_tmean[var2_name])
         ds.close()
         return covar_1.mean(dim='time', skipna=True) / (ds_tstd[var1_name] * ds_tstd[var2_name])
+
+    def np_ufunc_sqrt(self):
+        ds = self.open_dataset()
+        np_sqrt = np.sqrt(ds['value'])
+        ds.close()
+        return np_sqrt
+
+    def xr_ufunc_sqrt(self):
+        ds = self.open_dataset()
+        xr_sqrt = xr.ufuncs.sqrt(ds['value'])
+        xr_sqrt.compute()
+        ds.close()
+        return xr_sqrt
 
     @staticmethod
     def mem_release():
